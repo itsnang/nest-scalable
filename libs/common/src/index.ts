@@ -1,2 +1,2 @@
-export * from './config/config.module';
-export * from './database/database.module';
+export * from './database/index';
+export * from './logger/index';
