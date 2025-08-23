@@ -1,3 +1,4 @@
+import { UserDto } from '@app/common';
 import {
   CanActivate,
   ExecutionContext,
@@ -19,7 +20,7 @@ export class JwtAuthGuard implements CanActivate {
       return false;
     }
     return this.authClient
-      .send('authenticate', {
+      .send<UserDto>('authenticate', {
         Authentication: jwt,
       })
       .pipe(
