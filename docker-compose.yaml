@@ -27,5 +27,19 @@ services:
       - NODE_ENV=development
     volumes:
       - .:/usr/src/app
+  payments:
+    build:
+      context: .
+      dockerfile: ./apps/payments/Dockerfile
+      target: development
+    command: pnpm run start:dev payments
+    env_file:
+      - ./apps/payments/.env
+    ports:
+      - '3003:3003'
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/usr/src/app
   mongo:
     image: mongo
