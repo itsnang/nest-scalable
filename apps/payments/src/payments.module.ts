@@ -1,3 +1,4 @@
+import { LoggerModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
@@ -12,6 +13,7 @@ import { PaymentsService } from './payments.service';
         PORT: Joi.number().required(),
       }),
     }),
+    LoggerModule,
   ],
   controllers: [PaymentsController],
   providers: [PaymentsService],
