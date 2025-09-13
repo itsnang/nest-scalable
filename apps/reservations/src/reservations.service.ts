@@ -1,6 +1,7 @@
+import { PAYMENTS_SERVICE } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { PAYMENTS_SERVICE } from '../../../libs/common/src/constants/service';
+import { map } from 'rxjs';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
@@ -9,14 +10,23 @@ import { ReservationsRepository } from './reservations.repository';
 export class ReservationsService {
   constructor(
     private readonly reservationsRepository: ReservationsRepository,
-    @Inject(PAYMENTS_SERVICE) paymentServiceClient: ClientProxy,
+    @Inject(PAYMENTS_SERVICE)
+    private readonly paymentServiceClient: ClientProxy,
   ) {}
+  // for the payment i just mockup the response from the payment service
   async create(createReservationDto: CreateReservationDto, userId: string) {
-    return this.reservationsRepository.create({
-      ...createReservationDto,
-      timestamp: new Date(),
-      userId,
-    });
+    return this.paymentServiceClient
+      .send('create-charge', createReservationDto.charge)
+      .pipe(
+        map((paymentResponse) => {
+          return this.reservationsRepository.create({
+            ...createReservationDto,
+            invoiceId: paymentResponse.id,
+            timestamp: new Date(),
+            userId,
+          });
+        }),
+      );
   }
 
   async findAll() {

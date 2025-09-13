@@ -1,8 +1,10 @@
+import { CreateChargeDto } from '@app/common';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
-import { CreateChargeDto } from '../../../libs/common/src/dto/create-charge.dto';
 
+// TODO: Replace with actual Stripe integration once account is configured
+// Currently using mock implementation for development purposes (KJEL NAS>,<)
 @Injectable()
 export class PaymentsService {
   private readonly stripe = new Stripe(
@@ -11,18 +13,18 @@ export class PaymentsService {
   constructor(private readonly configService: ConfigService) {}
 
   async createCharge(createChargeDto: CreateChargeDto) {
-    const paymentMethod = await this.stripe.paymentMethods.create({
-      type: 'card',
-      card: createChargeDto.card,
+    console.log('Mock Payment Processing:', {
+      amount: createChargeDto.amount,
+      cardLast4: createChargeDto.card.token.slice(-4),
     });
 
-    const paymentIntent = await this.stripe.paymentIntents.create({
-      payment_method: paymentMethod.id,
+    // Return mock PaymentIntent data
+    return {
+      id: `pi_mock_${Date.now()}`,
       amount: createChargeDto.amount * 100,
-      confirm: true,
-      payment_method_types: ['card'],
       currency: 'usd',
-    });
-    return paymentIntent;
+      status: 'succeeded',
+      created: Math.floor(Date.now() / 1000),
+    };
   }
 }

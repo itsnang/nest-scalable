@@ -17,9 +17,6 @@ export class ReservationDocument extends AbstractDocument {
 
   @Prop()
   invoiceId: string;
-
-  @Prop()
-  placeId: string;
 }
 
 export const ReservationSchema =
