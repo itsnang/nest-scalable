@@ -34,6 +34,7 @@ export class PaymentsService {
 
       this.notificationsServiceClient.emit('notify_email', {
         email: createChargeDto.email,
+        text: `Your payment of $${createChargeDto.amount} has been received.`,
       });
 
       return {
