@@ -1,0 +1,60 @@
+steps:
+# reservation
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-southeast1-docker.pkg.dev/numeric-virtue-472406-c4/reservations/production',
+        '-f',
+        './apps/reservations/Dockerfile',
+        '.'
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      ['push', 'asia-southeast1-docker.pkg.dev/numeric-virtue-472406-c4/reservations/production']
+
+# auth
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-southeast1-docker.pkg.dev/numeric-virtue-472406-c4/auth/production',
+        '-f',
+        './apps/auth/Dockerfile',
+        '.'
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      ['push', 'asia-southeast1-docker.pkg.dev/numeric-virtue-472406-c4/auth/production']
+
+# payments
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-southeast1-docker.pkg.dev/numeric-virtue-472406-c4/payments/production',
+        '-f',
+        './apps/payments/Dockerfile',
+        '.'
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      ['push', 'asia-southeast1-docker.pkg.dev/numeric-virtue-472406-c4/payments/production']
+
+# notifications
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-southeast1-docker.pkg.dev/numeric-virtue-472406-c4/notifications/production',
+        '-f',
+        './apps/notifications/Dockerfile',
+        '.'
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      ['push', 'asia-southeast1-docker.pkg.dev/numeric-virtue-472406-c4/notifications/production']
